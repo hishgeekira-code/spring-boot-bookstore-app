@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Shopping Cart')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<header th:replace="~{fragments/layout :: nav}"></header>
+
+<main class="container flex-grow-1 py-4">
+    <div th:replace="~{fragments/layout :: flash}"></div>
+
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <h1 class="h3 mb-0">Shopping Cart</h1>
+        <form th:action="@{/cart/clear}" method="post" class="confirm-delete">
+            <button class="btn btn-outline-danger btn-sm" type="submit" th:if="${!lines.isEmpty()}">Clear cart</button>
+        </form>
+    </div>
+
+    <div class="table-responsive" th:if="${!lines.isEmpty()}">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col" class="w-25">Book</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="line : ${lines}">
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <img th:src="${line.book.imageUrl} ?: @{/images/placeholder.svg}" th:alt="${line.book.title}" class="cart-thumb">
+                            <div>
+                                <a th:href="@{/books/{id}(id=${line.book.id})}" class="text-decoration-none fw-semibold" th:text="${line.book.title}">Title</a>
+                                <div class="text-muted small" th:text="${line.book.author}">Author</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>$<span th:text="${#numbers.formatDecimal(line.book.price, 1, 2)}">0.00</span></td>
+                    <td>
+                        <form th:action="@{/cart/update}" method="post" class="d-inline-flex align-items-center gap-2">
+                            <input type="hidden" name="bookId" th:value="${line.book.id}">
+                            <input type="number" name="quantity" th:value="${line.quantity}" min="1" th:max="${line.book.stock}" class="form-control form-control-sm cart-qty" style="max-width: 80px">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                        </form>
+                    </td>
+                    <td class="fw-bold">$<span th:text="${#numbers.formatDecimal(line.subtotal, 1, 2)}">0.00</span></td>
+                    <td>
+                        <form th:action="@{/cart/remove}" method="post" class="confirm-delete">
+                            <input type="hidden" name="bookId" th:value="${line.book.id}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center py-5" th:if="${lines.isEmpty()}">
+        <h2 class="h5 text-muted">Your cart is empty</h2>
+        <a th:href="@{/}" class="btn btn-dark btn-sm mt-2">Start shopping</a>
+    </div>
+
+    <div class="row justify-content-end" th:if="${!lines.isEmpty()}">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <span class="fw-bold">$<span th:text="${#numbers.formatDecimal(total, 1, 2)}">0.00</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Shipping</span>
+                        <span class="text-muted">Free</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-5 mb-3">
+                        <span>Total</span>
+                        <span class="fw-bold text-success">$<span th:text="${#numbers.formatDecimal(total, 1, 2)}">0.00</span></span>
+                    </div>
+                    <a th:href="@{/orders/checkout}" class="btn btn-dark w-100">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/cart.js}"></script>
+</body>
+</html>
