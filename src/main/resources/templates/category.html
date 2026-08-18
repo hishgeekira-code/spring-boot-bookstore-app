@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/category.css">
+<script type="text/javascript" src="/js/category.js" defer></script>
+</head>
+<body>
+	<h1>Categories</h1>
+	
+	<header class="header">
+		<div class="container">
+			<h1>Bookstore Admin</h1>
+			<p>Category Management</p>
+		</div>
+	</header>
+	
+	<main class="container">
+		<div id="message" class="message" hidden>
+			
+		</div>
+		
+		<!-- Category Form -->
+		<section class="card">
+			<h2 id="form-title">Add Category</h2>
+			<form id="category-form">
+				<input type="hidden" id="category-id">
+				<div class="form-group">
+					<label for="category-name">Category Name</label>
+					<input type="text" id="category-name" placeholder="Programming" required>
+				</div>
+				
+				<div class="form-group">
+					<label for="category-description">Description</label>
+					<textarea rows="4" id="category-description" placeholder="Programming and Software Development books"></textarea>
+				</div>
+				
+				<div class="form-buttons">
+					<button type="submit" id="submit-button" class="button primary">Add Category</button>
+					<button type="button" id="cancel-button" class="button secondary">Cancel</button>
+				</div>
+			</form>
+		</section>
+		
+		<section class="card">
+			<div class="section-header">
+				<h2>Categories</h2>
+				<button id="refresh-button" class="button secondary">Refresh</button>
+			</div>
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="category-table-body">
+					
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+	
+</body>
+</html>
