@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="280" viewBox="0 0 200 280" role="img" aria-label="Book cover placeholder">
+  <rect width="200" height="280" fill="#e9ecef"/>
+  <rect x="20" y="30" width="160" height="220" fill="#ffffff" stroke="#adb5bd" stroke-width="2"/>
+  <line x1="20" y1="70" x2="180" y2="70" stroke="#adb5bd" stroke-width="2"/>
+  <line x1="20" y1="110" x2="180" y2="110" stroke="#adb5bd" stroke-width="2"/>
+  <line x1="20" y1="150" x2="180" y2="150" stroke="#adb5bd" stroke-width="2"/>
+  <text x="100" y="200" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#6c757d">Book</text>
+</svg>
