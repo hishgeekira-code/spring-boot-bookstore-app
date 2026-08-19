@@ -9,6 +9,10 @@ body {
 	color: #222;
 }
 
+body h1 {
+	padding: 0 24px;
+}
+
 .container {
 	width: min(1000px, calc(100%-32px));
 	margin: 0 auto;
@@ -23,11 +27,13 @@ body {
 
 .header h1 {
 	margin: 0 0 5px;
+	padding: 0 24px;
 }
 
 .header p {
 	margin: 0;
 	color: #ccc;
+	padding: 0 24px;
 }
 
 .card {
