@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/authors.css}">
+    <script th:src="@{/js/authors.js}" defer></script>
+</head>
+
+<body>
+    <div id="container">
+
+        <section class="card">
+            <h1>Author Managemant</h1>
+            <p id="message" hidden></p>
+
+            <form id="author-form">
+                <input type="text" id="author-id">
+                <div class="form-group">
+                    <label for="author-first-name">First name</label>
+                    <input type="text" id="author-first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="author-last-name">Last name</label>
+                    <input type="text" id="author-last-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="author-bio">Author bio</label>
+                    <textarea id="author-bio" rows="5"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="save-button">Save Author</button>
+                    <button type="button" id="cancel-button" hidden>Cancel</button>
+                </div>
+
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Authors</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Bio</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="author-table-body">
+
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+</body>
+
+</html>
