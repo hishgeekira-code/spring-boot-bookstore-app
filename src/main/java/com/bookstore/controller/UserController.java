@@ -2,6 +2,7 @@ package com.bookstore.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.bookstore.dto.*;
@@ -23,6 +24,7 @@ public class UserController {
 	}
 	
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public UserResponse create(@RequestBody UserCreateRequest request) {
 		return userService.createUser(request);
 	}
