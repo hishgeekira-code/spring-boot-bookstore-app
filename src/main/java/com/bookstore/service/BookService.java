@@ -2,6 +2,9 @@ package com.bookstore.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bookstore.dto.*;
@@ -73,6 +76,37 @@ public class BookService {
 	public void deleteBook(Long id) {
 		Book foundBook = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found with ID: " + id));
 		bookRepository.delete(foundBook);
+	}
+	
+	public Page<BookResponse> findShopBooks(String keyword, Long categoryId, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		
+		Page<Book> books;
+		
+		boolean hasKeyword = keyword != null && !keyword.isBlank();
+		boolean hasCategory = categoryId != null;
+		
+		if (hasKeyword && hasCategory) {
+			books = bookRepository.findByActiveTrueAndTitleContainingIgnoreCaseAndCategoryId(keyword.trim(), categoryId, pageable);
+		} else if (hasKeyword) {
+			books = bookRepository.findByActiveTrueAndTitleContainingIgnoreCase(keyword.trim(), pageable);
+		} else if (hasCategory) {
+			books = bookRepository.findByActiveTrueAndCategoryId(categoryId, pageable);
+		} else {
+			books = bookRepository.findByActiveTrue(pageable);
+		}
+		
+		return books.map(this::toResponse);
+	}
+	
+	public BookResponse findActiveBookById(Long id) {
+		Book book = bookRepository.findById(id).orElseThrow();
+		
+		if (!book.isActive()) {
+			System.out.println("Book is not active!");
+		}
+		
+		return toResponse(book);
 	}
 	
 	private BookResponse toResponse(Book book) {
