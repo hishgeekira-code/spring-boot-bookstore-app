@@ -6,9 +6,11 @@ const AUTHOR_API = "/api/authors";
 
 const form = document.querySelector("#book-form");
 const bookIdInput = document.querySelector("#book-id");
-const titleInput = document.querySelector("book-title");
+// # тэмдэг нэмсэн:
+const titleInput = document.querySelector("#book-title"); 
 const isbnInput = document.querySelector("#book-isbn");
-const priceInput = document.querySelector("book-price");
+// # тэмдэг нэмсэн:
+const priceInput = document.querySelector("#book-price"); 
 const stockInput = document.querySelector("#book-stock");
 const categoryInput = document.querySelector("#book-category");
 const authorInput = document.querySelector("#book-author");
@@ -20,7 +22,6 @@ const refreshButton = document.querySelector("#refresh-button");
 const message = document.querySelector("#message");
 
 async function loadCategories() {
-    console.log('category api');
     const response = await fetch(CATEGORY_API);
 
     if (!response.ok) {
@@ -28,12 +29,7 @@ async function loadCategories() {
     }
 
     const categories = await response.json();
-    categoryInput.innerHTML = 
-        `
-        <option value="">
-            Select Category
-        </option>
-        `;
+    categoryInput.innerHTML = `<option value="">Select Category</option>`;
     for (let category of categories) {
         const option = document.createElement("option");
         option.value = category.id;
@@ -49,7 +45,6 @@ console.log(csrfHeader);
 console.log(csrfToken);
 
 async function loadAuthors() {
-    console.log('author api');
     const response = await fetch(AUTHOR_API);
 
     if (!response.ok) {
@@ -57,12 +52,7 @@ async function loadAuthors() {
     }
 
     const authors = await response.json();
-    authorInput.innerHTML = 
-        `
-        <option value="">
-            Select Author
-        </option>
-        `;
+    authorInput.innerHTML = `<option value="">Select Author</option>`;
     for (let author of authors) {
         const option = document.createElement("option");
         option.value = author.id;
@@ -72,7 +62,6 @@ async function loadAuthors() {
 }
 
 async function loadBooks() {
-    console.log('book api');
     try {
         const response = await fetch(BOOK_API);
 
@@ -80,11 +69,10 @@ async function loadBooks() {
             throw new Error("Books could not be loaded.");
         }
         const books = await response.json();
-
         renderBooks(books);
     } catch (error) {
         console.error(error);
-        showMessage("Books could not be loaded.", true)
+        showMessage("Books could not be loaded.", true);
     }
 }
 
@@ -93,14 +81,10 @@ function renderBooks(books) {
     if (books.length === 0) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-
         cell.colSpan = 9;
         cell.textContent = "No books found";
-
         row.appendChild(cell);
-
         tableBody.appendChild(row);
-
         return;
     }
 
@@ -117,6 +101,7 @@ function renderBooks(books) {
 
         const actionCell = document.createElement("td");
         actionCell.className = "action-buttons";
+        
         const editButton = document.createElement("button");
         editButton.type = "button";
         editButton.textContent = "Edit";
@@ -152,21 +137,18 @@ async function handleSubmit(event) {
         active: activeInput.checked,
         categoryId: Number(categoryInput.value),
         authorId: Number(authorInput.value)
-    }
+    };
 
     const isEditing = id !== '';
     const url = isEditing ? `${BOOK_API}/${id}` : BOOK_API;
     const method = isEditing ? "PUT" : "POST";
+    
     try {
         const response = await fetch(url, {
             method: method,
             headers: {
-<<<<<<< Updated upstream
-                "Content-Types": "application/json"
-=======
                 "Content-Type": "application/json", // 'S' үсгийг хассан
                 [csrfHeader]: csrfToken
->>>>>>> Stashed changes
             },
             body: JSON.stringify(book)
         });
@@ -176,11 +158,10 @@ async function handleSubmit(event) {
         }
 
         showMessage(isEditing ? "Book updated successfully." : "Book created successfully.");
-        
         resetForm();
         await loadBooks();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         showMessage("Book could not be saved.", true);
     }
 }
@@ -193,7 +174,8 @@ function startEdit(book) {
     stockInput.value = book.stockQuantity;
     categoryInput.value = book.categoryId;
     authorInput.value = book.authorId;
-    activeInput.value = book.active;
+    activeInput.checked = book.active; // .value-г .checked болгож зассан
+    
     saveButton.textContent = "Update Book";
     cancelButton.hidden = false;
     window.scrollTo({
@@ -204,17 +186,13 @@ function startEdit(book) {
 
 async function deleteBook(id) {
     const confirmed = confirm("Are you sure you want to delete this book?");
-    if(!confirmed) {
-        return;
-    }
+    if (!confirmed) return;
 
     try {
-<<<<<<< Updated upstream
-        const response = await fetch(`${BOOK_API}/${id},`, {method: "DELETE"});
-=======
+
         // Зам доторх илүү таслалыг устгасан:
         const response = await fetch(`${BOOK_API}/${id}`, { method: "DELETE", headers: {[csrfHeader]: csrfToken} });
->>>>>>> Stashed changes
+
         if (!response.ok) {
             throw new Error("Delete failed.");
         }
@@ -231,8 +209,8 @@ function resetForm() {
     form.reset();
     bookIdInput.value = "";
     activeInput.checked = true;
-    saveButton.textContent = "Save Button"
-    cancelButton.hidden = false;
+    saveButton.textContent = "Save Book";
+    cancelButton.hidden = true; // Шинээр бэлдэх үед Cancel товчийг нууна
 }
 
 function showMessage(text, isError = false) {
@@ -251,9 +229,7 @@ function showMessage(text, isError = false) {
 }
 
 form.addEventListener('submit', handleSubmit);
-
 cancelButton.addEventListener('click', resetForm);
-
 refreshButton.addEventListener('click', loadBooks);
 
 async function initializePage() {
@@ -261,7 +237,7 @@ async function initializePage() {
         await Promise.all([
             loadCategories(),
             loadAuthors()
-        ])
+        ]);
         await loadBooks();
     } catch (error) {
         console.error(error);

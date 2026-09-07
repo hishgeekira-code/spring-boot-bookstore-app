@@ -1,0 +1,55 @@
+	<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+</html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${book.title + ' | Bookstore'}">Book | Bookstore</title>
+    <link rel="stylesheet" th:href="@{/css/shop.css}">
+</head>
+<body>
+    
+    <header class="site-header">
+        <div class="container nav">
+            <a th:href="@{/shop}" class="logo">Bookstore</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <a th:href="@{/shop}" class="back-link"> Back to books</a>
+        <section class="book-detail">
+            <div class="detail-cover">Book</div>
+            <div class="detail-content">
+                <p class="category" th:text="${book.categoryName}">Programming</p>
+                <h1 th:text="${book.title}">Clean Code</h1>
+                <p class="author">By 
+                    <strong><span th:text="${book.authorFirstName}"></span>
+                        <span th:text="${book.authorLastName}"></span> 
+                    </strong>
+                </p>
+
+                <dl>
+                    <div>
+                        <dt>ISBN</dt>
+                        <dd th:text="${book.isbn}"></dd>
+                    </div>
+                    <div>
+                        <dt>PRICE</dt>
+                        <dd th:text="${book.price + ' ₮'}"></dd>
+                    </div>
+                    <div>
+                        <dt>Available Stock</dt>
+                        <dd th:text="${book.stockQuantity}"></dd>
+                    </div>
+                </dl>
+
+                <button type="button" disabled> Add to Cart</button>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
