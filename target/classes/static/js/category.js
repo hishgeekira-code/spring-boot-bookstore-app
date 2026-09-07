@@ -27,6 +27,9 @@ async function loadCategories() {
   }
 }
 
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
 function renderCategories(categories) {
   if (!tableBody) return;
   tableBody.innerHTML = "";
@@ -108,6 +111,7 @@ async function handleSubmit(e) {
       method: method,
       headers: {
         "Content-Type": "application/json",
+        [csrfHeader]: csrfToken
       },
       body: JSON.stringify(categoryData),
     });
@@ -136,6 +140,7 @@ async function deleteCategory(id) {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
+      headers: {[csrfHeader]: csrfToken}
     });
 
     if (!response.ok) {
