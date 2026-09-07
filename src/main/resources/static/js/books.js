@@ -42,6 +42,12 @@ async function loadCategories() {
     }
 }
 
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+console.log(csrfHeader);
+console.log(csrfToken);
+
 async function loadAuthors() {
     console.log('author api');
     const response = await fetch(AUTHOR_API);
@@ -155,7 +161,12 @@ async function handleSubmit(event) {
         const response = await fetch(url, {
             method: method,
             headers: {
+<<<<<<< Updated upstream
                 "Content-Types": "application/json"
+=======
+                "Content-Type": "application/json", // 'S' үсгийг хассан
+                [csrfHeader]: csrfToken
+>>>>>>> Stashed changes
             },
             body: JSON.stringify(book)
         });
@@ -198,7 +209,12 @@ async function deleteBook(id) {
     }
 
     try {
+<<<<<<< Updated upstream
         const response = await fetch(`${BOOK_API}/${id},`, {method: "DELETE"});
+=======
+        // Зам доторх илүү таслалыг устгасан:
+        const response = await fetch(`${BOOK_API}/${id}`, { method: "DELETE", headers: {[csrfHeader]: csrfToken} });
+>>>>>>> Stashed changes
         if (!response.ok) {
             throw new Error("Delete failed.");
         }
