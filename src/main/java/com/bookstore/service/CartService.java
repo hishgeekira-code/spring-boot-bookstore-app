@@ -86,6 +86,38 @@ public class CartService {
 		return new CartResponse(cart.getId(), itemResponses, total);
 	}
 	
+	@Transactional
+	public CartResponse updateQuantity(Long itemId, UpdateCartItemRequest request) {
+		Cart cart = getOrCreateCurrentCart();
+		
+		CartItem item = cartItemRepository.findById(itemId).orElseThrow();
+		
+		if (!item.getCart().getId().equals(cart.getId())) {
+			System.out.println("Cart item not found");
+		}
+		
+		if (request.quantity() > item.getBook().getStockQuantity()) {
+			System.out.println("Requested quantity exceeds stock");
+		}
+		
+		item.setQuantity(request.quantity());
+		
+		cartItemRepository.save(item);
+		return getCurrentCart();
+	}
+	
+	public CartResponse removeItem(Long itemId) {
+		Cart cart = getOrCreateCurrentCart();
+		
+		CartItem item = cartItemRepository.findById(itemId).orElseThrow();
+		if (!item.getCart().getId().equals(cart.getId())) {
+			System.out.println("Cart item not found");
+		}
+		
+		cartItemRepository.delete(item);
+		return getCurrentCart();
+	}
+	
 	private CartItemResponse toResponse (CartItem item) {
 		BigDecimal lineTotal = item.getBook().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
 		return new CartItemResponse(item.getId(), item.getBook().getId(), item.getBook().getTitle(), item.getBook().getPrice(), item.getQuantity(), lineTotal);
