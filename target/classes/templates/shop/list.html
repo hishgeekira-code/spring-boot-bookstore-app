@@ -58,7 +58,7 @@
         <section>
             <div class="result-heading">
                 <h2>Books</h2>
-                <p th:if="${books.totalElements > 0}"><span th:text="${books.totalElements}">0</span>books found</p>
+                <p th:if="${books.totalElements > 0}"><span th:text="${books.totalElements}">0</span> books found</p>
             </div>
 
             <div class="empty-state" th:if="${books.isEmpty()}">No books found</div>
