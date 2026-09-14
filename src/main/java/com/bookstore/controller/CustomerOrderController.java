@@ -26,4 +26,9 @@ public class CustomerOrderController {
 	public OrderResponse findById(@PathVariable Long id) {
 		return customerOrderService.findCurrentUserOrderById(id);
 	}
+	
+	@PutMapping("/{id}/cancel")
+	public OrderResponse cancel(@PathVariable Long id) {
+		return customerOrderService.cancelOrder(id);
+	}
 }

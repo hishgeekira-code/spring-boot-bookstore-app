@@ -25,7 +25,7 @@ public class CustomerOrderPageController {
 	
 	@GetMapping("/{id}")
 	public String orderDetail(@PathVariable Long id, Model model) {
-		model.addAttribute("orders", customerOrderService.findCurrentUserOrderById(id));
+		model.addAttribute("order", customerOrderService.findCurrentUserOrderById(id));
 		return "customer/order-detail";
 	}
 }
