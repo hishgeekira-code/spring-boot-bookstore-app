@@ -17,14 +17,16 @@ public class CustomerOrderService {
 	private final OrderRepository orderRepository;
 	private final OrderItemRepository orderItemRepository;
 	private final CurrentUserService currentUserService;
+	private final PaymentRepository paymentRepository;
 
 	public CustomerOrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-			CurrentUserService currentUserService, BookRepository bookRepository) {
+			CurrentUserService currentUserService, BookRepository bookRepository, PaymentRepository paymentRepository) {
 		super();
 		this.orderRepository = orderRepository;
 		this.orderItemRepository = orderItemRepository;
 		this.currentUserService = currentUserService;
 		this.bookRepository = bookRepository;
+		this.paymentRepository = paymentRepository;
 	}
 
 	public List<OrderResponse> findCurrentUserOrders() {
@@ -72,8 +74,9 @@ public class CustomerOrderService {
 	private OrderResponse toResponse(Order order) {
 		List<OrderItemResponse> items = orderItemRepository.findByOrderOrderByIdAsc(order).stream()
 				.map(this::toItemResponse).toList();
+		String paymentStatus = paymentRepository.findByOrder(order).map(payment -> payment.getStatus().name()).orElse("NOT_STARTED");
 
-		return new OrderResponse(order.getId(), order.getStatus().name(), order.getTotalAmount(), order.getCreatedAt(),
+		return new OrderResponse(order.getId(), order.getStatus().name(), order.getTotalAmount(), paymentStatus, order.getCreatedAt(),
 				items);
 	}
 
