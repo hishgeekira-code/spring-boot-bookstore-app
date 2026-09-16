@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Processing</title>
+    <link rel="stylesheet" th:href="@{/css/customer-orders.css}">
+</head>
+<body>
+    
+    <div class="container">
+        <section class="card">
+            <h1>Thank you</h1>
+
+            <p>Your payment has been submitted</p>
+            
+            <p>We are confirming the payment with Stripe</p>
+
+            <a class="button" th:href="@{/customer/orders}"> My Orders </a>
+        </section>
+    </div>
+
+</body>
+</html>
